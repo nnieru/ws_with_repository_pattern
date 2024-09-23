@@ -1,9 +1,11 @@
 ﻿using Binus.WS.Pattern.Service;
 using Microsoft.AspNetCore.Mvc;
 using Binus.WS.Pattern.Output;
+using ws_with_repository_pattern.Common;
 using ws_with_repository_pattern.Helper;
 using ws_with_repository_pattern.Model.Dto;
 using ws_with_repository_pattern.Output;
+using ws_with_repository_pattern.Repository;
 
 namespace ws_with_repository_pattern.Services;
 
@@ -26,14 +28,18 @@ public class SampleService: BaseService, ISampleService
     [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
     public IActionResult Test(SampleRequestDto requestDto)
     {
-        var validator = ValidatorHelperFactory.New<SampleRequestDto>(requestDto, new SampleRequestValidator());
-        var validation = validator.Validate();
+        // create handler
+        var repo = new SampleRepository();
+        var validator = ValidatorHelperFactory.New(requestDto, new SampleRequestValidator());
+        var factory = SampleFactory.New(repo, validator);
         
-        if (!validation.IsPassed)
+        var result = factory.Handle(requestDto);
+        if (result.ErrorMessages.Count > 0)
         {
-            return StatusCode(400,validation.Errors);
+            return StatusCode(400, result);
         }
-        return StatusCode(200,"oke");
+        
+        return StatusCode(200, result);
     }
     
 }
