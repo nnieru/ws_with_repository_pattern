@@ -1,7 +1,6 @@
-﻿using Binus.WS.Pattern.Model;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace ws_with_repository_pattern.Helper;
+namespace ws_with_repository_pattern.Common;
 
 public class ValidationResult
 {
