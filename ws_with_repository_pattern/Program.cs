@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Binus.WS.Pattern.Entities;
 using System.Linq;
-using SSG7.C2.Student.Activity.API;
+using ws_with_repository_pattern;
 
 public class Program
 {
