@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ws_with_repository_pattern.DbContext;
-using ws_with_repository_pattern.Model.Dto;
+﻿using ws_with_repository_pattern.Domain.Model.Sample;
+using ws_with_repository_pattern.Infrastructures.Presistance.DbContext;
 
-namespace ws_with_repository_pattern.Repository;
+namespace ws_with_repository_pattern.Infrastructures.Presistance.Repository;
 
 public interface ISampleRepository
 {

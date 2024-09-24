@@ -1,16 +1,13 @@
 ﻿using Binus.WS.Pattern.Service;
 using Microsoft.AspNetCore.Mvc;
-using Binus.WS.Pattern.Output;
-using FluentValidation;
-using ws_with_repository_pattern.Common;
-using ws_with_repository_pattern.DbContext;
-using ws_with_repository_pattern.Helper;
-using ws_with_repository_pattern.Model.Dto;
-using ws_with_repository_pattern.Output;
-using ws_with_repository_pattern.Repository;
-using IValidator = ws_with_repository_pattern.Common.IValidator;
+using ws_with_repository_pattern.Domain.Common;
+using ws_with_repository_pattern.Domain.Model.Sample;
+using ws_with_repository_pattern.Domain.Model.Sample.Dto;
+using ws_with_repository_pattern.Domain.Output;
+using ws_with_repository_pattern.Infrastructures.Presistance.Repository;
+using ws_with_repository_pattern.Infrastructures.Presistance.UnitOfWorks;
 
-namespace ws_with_repository_pattern.Services;
+namespace ws_with_repository_pattern.Presentation.Controllers.Sample;
 
 interface ISampleService
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ws_with_repository_pattern.Model.Dto;
+using ws_with_repository_pattern.Domain.Model.Sample;
 
-namespace ws_with_repository_pattern.DbContext;
+namespace ws_with_repository_pattern.Infrastructures.Presistance.DbContext;
 
 public class SampleDbContext: Microsoft.EntityFrameworkCore.DbContext
 {

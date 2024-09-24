@@ -1,4 +1,4 @@
-﻿namespace ws_with_repository_pattern.Model.Dto;
+﻿namespace ws_with_repository_pattern.Domain.Model.Sample;
 
 public class Sample
 {

@@ -1,9 +1,9 @@
-﻿using ws_with_repository_pattern.Common;
-using ws_with_repository_pattern.Helper;
-using ws_with_repository_pattern.Model.Dto;
-using ws_with_repository_pattern.Repository;
+﻿using ws_with_repository_pattern.Domain.Common;
+using ws_with_repository_pattern.Domain.Model.Sample.Dto;
+using ws_with_repository_pattern.Infrastructures.Presistance.Repository;
+using ws_with_repository_pattern.Infrastructures.Presistance.UnitOfWorks;
 
-namespace ws_with_repository_pattern.Handler;
+namespace ws_with_repository_pattern.Application.Handler;
 
 public interface ISampleHandler
 {

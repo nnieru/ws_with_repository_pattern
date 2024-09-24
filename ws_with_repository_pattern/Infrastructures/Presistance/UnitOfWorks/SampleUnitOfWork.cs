@@ -1,6 +1,7 @@
-﻿using ws_with_repository_pattern.DbContext;
+﻿using ws_with_repository_pattern.Infrastructures.Presistance.DbContext;
+using ws_with_repository_pattern.Infrastructures.Presistance.Repository;
 
-namespace ws_with_repository_pattern.Repository;
+namespace ws_with_repository_pattern.Infrastructures.Presistance.UnitOfWorks;
 
 public class SampleUnitOfWork: IDisposable
 {

@@ -1,6 +1,4 @@
-﻿using Binus.WS.Pattern.Output;
-
-namespace ws_with_repository_pattern.Model.Dto;
+﻿namespace ws_with_repository_pattern.Domain.Model.Sample.Dto;
 
 public class SampleResponseDto
 {

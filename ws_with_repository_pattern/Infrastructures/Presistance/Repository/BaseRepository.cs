@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ws_with_repository_pattern.Repository;
+namespace ws_with_repository_pattern.Infrastructures.Presistance.Repository;
 
 interface IBaseRepository<TEntity>
 {

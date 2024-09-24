@@ -1,4 +1,4 @@
-﻿namespace ws_with_repository_pattern.Common;
+﻿namespace ws_with_repository_pattern.Domain.Common;
 
 public class Result<T>
 {

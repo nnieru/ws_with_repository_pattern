@@ -1,25 +1,11 @@
 ﻿using Binus.WS.Pattern.Entities.Interfaces;
 using Binus.WS.Pattern.Entities.Proxy;
-using Binus.WS.Pattern.RouteGuard.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using ws_with_repository_pattern.DbContext;
-using ws_with_repository_pattern.Model.Dto;
-using ws_with_repository_pattern.Repository;
-using ws_with_repository_pattern.Services;
+using ws_with_repository_pattern.Infrastructures.Presistance.DbContext;
+using ws_with_repository_pattern.Infrastructures.Presistance.UnitOfWorks;
 
 namespace ws_with_repository_pattern
 {
