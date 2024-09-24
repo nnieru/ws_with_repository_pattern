@@ -33,7 +33,7 @@ public class SampleHandler: ISampleHandler
             };
         }
 
-        var result = _repository.Get(request);
+        var result = _repository.GetAllSample();
 
         if (result != null)
         {

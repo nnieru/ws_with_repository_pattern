@@ -1,22 +1,28 @@
-﻿using ws_with_repository_pattern.Model.Dto;
+﻿using Microsoft.EntityFrameworkCore;
+using ws_with_repository_pattern.DbContext;
+using ws_with_repository_pattern.Model.Dto;
 
 namespace ws_with_repository_pattern.Repository;
 
 public interface ISampleRepository
 {
-    Sample? Get(SampleRequestDto request);
+    public IEnumerable<Sample> GetAllSample();
 }
 
-public class SampleRepository: ISampleRepository
+public class SampleRepository: BaseRepository<Sample>, ISampleRepository
 {
-    public Sample? Get(SampleRequestDto request)
+
+    public SampleRepository(SampleDbContext context) : base(context)
     {
-        return new Sample
-        {
-            Id = "0x00000000",
-            Name = request.Name,
-            Address = "Jl. xxxxx xxxx",
-            Phone = "+62 xxx xxx xxx"
-        };
+        
+    }
+    
+
+    public IEnumerable<Sample> GetAllSample()
+    {
+        return GetAll();
     }
 }
+
+
+

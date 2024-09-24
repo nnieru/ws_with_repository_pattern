@@ -14,8 +14,14 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using ws_with_repository_pattern.DbContext;
+using ws_with_repository_pattern.Model.Dto;
+using ws_with_repository_pattern.Repository;
+using ws_with_repository_pattern.Services;
 
-namespace SSG7.C2.Student.Activity.API
+namespace ws_with_repository_pattern
 {
     public class Startup
     {
@@ -40,26 +46,7 @@ namespace SSG7.C2.Student.Activity.API
             // Inject here
             services.AddScoped<IEntityHelper, EntityHelperProxy>();
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "test api",
-                    Description = "A simple example ASP.NET Core Web API",
-                });
-
-
-                // Set the comments path for the Swagger JSON and UI.
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //c.IncludeXmlComments(xmlPath);
-
-
-                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-            });
-
+           
             // Add CORS policy for Dev environment
             services.AddCors(options =>
                 options.AddPolicy("AllowAll", builder =>
@@ -85,6 +72,15 @@ namespace SSG7.C2.Student.Activity.API
             {
                 options.AllowSynchronousIO = true;
             });
+            
+            // DbContext
+            services.AddDbContext<SampleDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+            
+            // DI
+            services.AddScoped<ISampleRepository, SampleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,24 +88,9 @@ namespace SSG7.C2.Student.Activity.API
         {
             if (env.EnvironmentName == "Development")
             {
-                app.UseDeveloperExceptionPage()
-                    .UseSwagger() // Enable middleware to serve generated Swagger as a JSON endpoint.
-                    .UseSwaggerUI(c =>
-                    {
-                        // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-                        // specifying the Swagger JSON endpoint.
-                        c.SwaggerEndpoint("v1/swagger.json", "API.Test API V1");
-                    })
-                    .UseCors("AllowAll");
+              
             }
-
-            //FileHelper.Initialize(env);
-
-            // app.UseCors(
-            //      options => options.WithOrigins("https://dev-sa.apps.binus.ac.id", "https://studentactivity.apps.binus.ac.id").AllowAnyHeader().AllowAnyMethod()
-            //  );
-            // app.UseCors();
-
+            
             app.UseRouting();
 
             // app.UseMiddleware<RouteGuardMiddleware>();
