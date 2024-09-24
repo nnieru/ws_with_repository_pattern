@@ -8,8 +8,8 @@ namespace ws_with_repository_pattern.Services;
 public static class SampleFactory
 {
     
-    public static SampleHandler New(ISampleRepository repository, IValidator validator)
+    public static SampleHandler New(SampleUnitOfWork unitOfWork, IValidator validator)
     {
-        return new SampleHandler(repository, validator);
+        return new SampleHandler(unitOfWork, validator);
     }
 }

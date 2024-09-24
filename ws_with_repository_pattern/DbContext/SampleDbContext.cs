@@ -10,6 +10,11 @@ public class SampleDbContext: Microsoft.EntityFrameworkCore.DbContext
         : base(options)
     {
     }
+
+    public SampleDbContext()
+    {
+        
+    }
     
     public DbSet<Sample> Samples { get; set; }
 }

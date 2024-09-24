@@ -21,13 +21,13 @@ interface ISampleService
 [Route("sample")]
 public class SampleService: BaseService, ISampleService
 {
-    private readonly ISampleRepository _repository;
+    private readonly SampleUnitOfWork _unitOfWork;
 
   
-    public SampleService(ILogger<BaseService> logger,    ISampleRepository repository
+    public SampleService(ILogger<BaseService> logger, SampleUnitOfWork unitOfWork
    ) : base(logger)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
 
     }
 
@@ -39,7 +39,7 @@ public class SampleService: BaseService, ISampleService
     {
         var validator = ValidatorHelperFactory.New(requestDto, new SampleRequestValidator());
         // create handler
-        var factory = SampleFactory.New(_repository, validator);
+        var factory = SampleFactory.New(_unitOfWork, validator);
 
         try
         {
@@ -58,5 +58,4 @@ public class SampleService: BaseService, ISampleService
         }
        
     }
-    
 }

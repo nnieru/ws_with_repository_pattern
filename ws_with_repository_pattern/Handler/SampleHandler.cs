@@ -12,12 +12,12 @@ public interface ISampleHandler
 
 public class SampleHandler: ISampleHandler
 {
-    private readonly ISampleRepository _repository;
+    private readonly SampleUnitOfWork _unitOfWork;
     private readonly IValidator _validator;
 
-    public SampleHandler(ISampleRepository repository, IValidator validator)
+    public SampleHandler(SampleUnitOfWork unitOfWork, IValidator validator)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
         _validator = validator;
     }
     
@@ -33,7 +33,7 @@ public class SampleHandler: ISampleHandler
             };
         }
 
-        var result = _repository.GetAllSample();
+        var result = _unitOfWork.SampleRepositoryImp.GetAllSample();
 
         if (result != null)
         {
