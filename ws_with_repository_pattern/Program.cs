@@ -5,7 +5,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using Binus.WS.Pattern.Entities;
 using System.Linq;
 using ws_with_repository_pattern;
 

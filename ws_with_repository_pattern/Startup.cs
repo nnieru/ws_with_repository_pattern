@@ -1,5 +1,5 @@
-﻿using Binus.WS.Pattern.Entities.Interfaces;
-using Binus.WS.Pattern.Entities.Proxy;
+﻿// using Binus.WS.Pattern.Entities.Interfaces;
+// using Binus.WS.Pattern.Entities.Proxy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -33,7 +33,6 @@ namespace ws_with_repository_pattern
             services.AddMvcCore().AddApiExplorer();
 
             // Inject here
-            services.AddScoped<IEntityHelper, EntityHelperProxy>();
 
            
             // Add CORS policy for Dev environment
