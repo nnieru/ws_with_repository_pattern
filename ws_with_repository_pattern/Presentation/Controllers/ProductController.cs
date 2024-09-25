@@ -1,5 +1,4 @@
-﻿using Binus.WS.Pattern.Service;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ws_with_repository_pattern.Application.Contract;
 using ws_with_repository_pattern.Application.Dto.Product;
 using ws_with_repository_pattern.Infrastructures.Helper;
@@ -8,10 +7,10 @@ namespace ws_with_repository_pattern.Presentation.Controllers;
 
 [ApiController]
 [Route("product")]
-public class ProductController: BaseService
+public class ProductController: ControllerBase
 {
     private readonly IProductService _productService;
-    public ProductController(ILogger<BaseService> logger, IProductService service) : base(logger)
+    public ProductController(IProductService service) 
     {
         _productService = service;
     }
