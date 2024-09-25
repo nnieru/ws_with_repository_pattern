@@ -1,25 +1,14 @@
 ﻿using Binus.WS.Pattern.Entities.Interfaces;
 using Binus.WS.Pattern.Entities.Proxy;
-using Binus.WS.Pattern.RouteGuard.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using ws_with_repository_pattern.DbContext;
-using ws_with_repository_pattern.Model.Dto;
-using ws_with_repository_pattern.Repository;
-using ws_with_repository_pattern.Services;
+using ws_with_repository_pattern.Application.Contract;
+using ws_with_repository_pattern.Application.Service;
+using ws_with_repository_pattern.Domain.Contract;
+using ws_with_repository_pattern.Domain.DbContext;
+using ws_with_repository_pattern.Domain.Repository;
 
 namespace ws_with_repository_pattern
 {
@@ -74,13 +63,14 @@ namespace ws_with_repository_pattern
             });
             
             // DbContext
-            services.AddDbContext<SampleDbContext>(opt =>
+            services.AddDbContext<KazutoDbContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                opt.UseSqlServer(Configuration.GetConnectionString("KazutoDB"));
             });
-            
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
             // DI
-            services.AddScoped<ISampleRepository, SampleRepository>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
