@@ -68,8 +68,10 @@ namespace ws_with_repository_pattern
             });
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
-            // DI
-           
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

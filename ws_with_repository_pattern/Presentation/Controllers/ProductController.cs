@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ws_with_repository_pattern.Application.Contract;
 using ws_with_repository_pattern.Application.Dto.Product;
 using ws_with_repository_pattern.Infrastructures.Helper;
@@ -16,6 +17,7 @@ public class ProductController: ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     [Route("products")]
     [Produces("application/json")]
     // [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
@@ -33,6 +35,7 @@ public class ProductController: ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     [Route("productById")]
     [Produces("application/json")]
     // [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
