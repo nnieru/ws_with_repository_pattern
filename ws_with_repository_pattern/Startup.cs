@@ -2,6 +2,8 @@
 // using Binus.WS.Pattern.Entities.Proxy;
 
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -66,6 +68,12 @@ namespace ws_with_repository_pattern
                 options.AllowSynchronousIO = true;
             });
             
+            
+            // fluent validation
+            services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
+            
             // DbContext
             services.AddDbContext<KazutoDbContext>(opt =>
             {
@@ -122,6 +130,7 @@ namespace ws_with_repository_pattern
             app.UseAuthorization();
 
             // app.UseMiddleware<RouteGuardMiddleware>();
+            // app.UseMiddleware<FluentValidationMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -20,12 +20,6 @@ public class AuthController: ControllerBase
     [Route("sign-up")]
     public async Task<IActionResult> SignUp([FromBody] UserRegistrationRequestDto request)
     {
-        var validator = ValidatorHelperFactory.New(request, new UserRegistrationRequestValidator());
-        var validationResult = validator.Validate();
-        if (!validationResult.IsPassed)
-        {
-            return BadRequest(validationResult.Errors);
-        }
 
         await _authenticationService.Register(request);
         
