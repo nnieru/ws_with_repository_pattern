@@ -1,6 +1,7 @@
 ﻿// using Binus.WS.Pattern.Entities.Interfaces;
 // using Binus.WS.Pattern.Entities.Proxy;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
@@ -83,6 +84,8 @@ namespace ws_with_repository_pattern
             }
             
             app.UseRouting();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
 
             // app.UseMiddleware<RouteGuardMiddleware>();
 
