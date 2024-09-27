@@ -19,6 +19,7 @@ public class ProductController: ControllerBase
     [HttpGet]
     [Authorize]
     [Route("products")]
+    [Authorize(Roles = "General")]
     [Produces("application/json")]
     // [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
     public  async Task<IActionResult> GetAllProducts()
@@ -37,6 +38,7 @@ public class ProductController: ControllerBase
     [HttpPost]
     [Authorize]
     [Route("productById")]
+    [Authorize(Roles = "General")]
     [Produces("application/json")]
     // [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
     public  async Task<IActionResult> GetProductById(GetProductByIdRequestDto request) 

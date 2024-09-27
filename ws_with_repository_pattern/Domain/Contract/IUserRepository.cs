@@ -7,4 +7,6 @@ public interface IUserRepository
     public Task InsertUser(User user);
     public Task InsertUserRoleMapping(string userId, Guid roleId);
     public Task<User?> GetUser(string email);
+    public Task<List<UserRoleMapping>> GetUserRoles (string email);
+    public Task<List<MasterRole>> GetMasterRoles();
 }

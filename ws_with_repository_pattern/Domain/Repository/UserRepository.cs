@@ -1,4 +1,5 @@
-﻿using ws_with_repository_pattern.Domain.Contract;
+﻿using Microsoft.EntityFrameworkCore;
+using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.DbContext;
 using ws_with_repository_pattern.Domain.Entity;
 
@@ -49,8 +50,27 @@ public class UserRepository: IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<User?> GetUser(string email)
+    public async Task<User?> GetUser(string email)
     {
-        throw new NotImplementedException();
+        return await _userDbContext.Set<User>().FirstOrDefaultAsync(x => x.email == email);
+    }
+
+    public async Task<List<UserRoleMapping>> GetUserRoles(string email)
+    {
+        var user = await GetUser(email);
+
+        if (user != null)
+        {
+            return await _userDbContext.Set<UserRoleMapping>()
+                .AsNoTracking()
+                .Where(x => x.userId == user.id).ToListAsync();
+        }
+        
+        return new List<UserRoleMapping>();
+    }
+
+    public async Task<List<MasterRole>> GetMasterRoles()
+    {
+        return await _userDbContext.Set<MasterRole>().Where(x => x.deleted_at == null).ToListAsync();
     }
 }
