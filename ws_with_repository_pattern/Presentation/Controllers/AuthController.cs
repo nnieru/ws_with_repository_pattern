@@ -17,7 +17,7 @@ public class AuthController: ControllerBase
     }
     
     [HttpPost]
-    [Route("sign-up")]
+    [Route("sign-up")]  
     public async Task<IActionResult> SignUp([FromBody] UserRegistrationRequestDto request)
     {
 
@@ -30,24 +30,10 @@ public class AuthController: ControllerBase
     [Route("sign-in")]
     public async Task<IActionResult> Signin([FromBody] UserSignInRequestDto requestDto)
     {
-        try
-        {
-            var result = await _authenticationService.SignIn(requestDto);
-            return Ok(result);
-        }
-        catch (Exception e)
-        {
-            if (e.Message == "Unauthorized")
-            {
-                return Unauthorized(e);
-            }
-
-            if (e.Message == "User Not Found")
-            {
-                return NotFound(e);
-            }
-
-            return StatusCode(500, e.Message);
-        }
+       
+        var result = await _authenticationService.SignIn(requestDto);
+        return Ok(result);
+        
+       
     }
 }
