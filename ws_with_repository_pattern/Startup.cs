@@ -17,6 +17,7 @@ using ws_with_repository_pattern.Application.Service;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.DbContext;
 using ws_with_repository_pattern.Domain.Repository;
+using ws_with_repository_pattern.Infrastructures.Grafana;
 
 namespace ws_with_repository_pattern
 {
@@ -69,7 +70,9 @@ namespace ws_with_repository_pattern
                 options.AllowSynchronousIO = true;
             });
             
-            
+            services.AddSingleton<Instrumentor>();
+            services.AddInstrumentorServices();
+                
             // fluent validation
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             services.AddFluentValidationAutoValidation();
@@ -115,6 +118,7 @@ namespace ws_with_repository_pattern
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+     
 
         }
 
@@ -130,6 +134,7 @@ namespace ws_with_repository_pattern
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseExceptionMiddleware();
+            app.UseInstrumentorApps();
 
             // app.UseMiddleware<RouteGuardMiddleware>();
             
