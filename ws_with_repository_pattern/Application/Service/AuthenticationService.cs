@@ -9,6 +9,7 @@ using ws_with_repository_pattern.Application.Dto.Auth;
 using ws_with_repository_pattern.Application.Exception;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.Entity;
+using ws_with_repository_pattern.Infrastructures.Helper;
 using ws_with_repository_pattern.Response;
 
 namespace ws_with_repository_pattern.Application.Service;
@@ -87,7 +88,9 @@ public class AuthenticationService: IAuthenticationService
             signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256)
         );
         
-        var userSiginInResponse =  new UserSignInResponseDto
+        
+        
+        var userSiginInResponse = new UserSignInResponseDto
         {
             id = user.id,
             username = user.username,
@@ -96,11 +99,7 @@ public class AuthenticationService: IAuthenticationService
             expiration = token.ValidTo
         };
 
-        return new BaseResponse<UserSignInResponseDto>
-        {
-            StatusCode = HttpStatusCode.OK,
-            message = "success",
-            data = userSiginInResponse
-        };
+        return ResponseMapper<UserSignInResponseDto, UserSignInResponseDto>.MapToBaseResponse(userSiginInResponse,
+            HttpStatusCode.OK, "success"); 
     }
 }
