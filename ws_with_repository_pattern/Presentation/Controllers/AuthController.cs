@@ -21,9 +21,7 @@ public class AuthController: ControllerBase
     [Route("sign-up")]  
     public async Task<IActionResult> SignUp([FromBody] UserRegistrationRequestDto request)
     {
-
         await _authenticationService.Register(request);
-        
         return Ok();
     }
 
@@ -31,7 +29,6 @@ public class AuthController: ControllerBase
     [Route("sign-in")]
     public async Task<IActionResult> Signin([FromBody] UserSignInRequestDto requestDto)
     {
-       
         var result = await _authenticationService.SignIn(requestDto);
         return Ok(result);
     }
