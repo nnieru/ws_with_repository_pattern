@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ws_with_repository_pattern.Application.AuthorizationRequirement;
 using ws_with_repository_pattern.Application.Contract;
+using ws_with_repository_pattern.Application.Extension;
 using ws_with_repository_pattern.Application.Middlewares;
 using ws_with_repository_pattern.Application.Service;
 using ws_with_repository_pattern.Domain.Contract;
@@ -105,35 +106,11 @@ namespace ws_with_repository_pattern
                 };
             });
             
-            // Add authorization policies
-            services.AddAuthorization(options =>
-            {
-                // role
-                options.AddPolicy("AdminPolicy", policy =>
-                    policy.RequireRole("administrator"));
-                options.AddPolicy("UserPolicy", policy =>
-                    policy.RequireRole("General"));
-                
-                // permission
-                options.AddPolicy("read", policy =>
-                    policy.Requirements.Add(new PermissionRequirement("READ")));
-
-                options.AddPolicy("write", policy =>
-                    policy.Requirements.Add(new PermissionRequirement("WRITE")));
-
-                options.AddPolicy("delete", policy =>
-                    policy.Requirements.Add(new PermissionRequirement("DELETE")));
-            });
-            
-            
+            services.AddAccessRoles();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            
-            services.AddSingleton<IAuthorizationHandler, Permissionhandler>();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
