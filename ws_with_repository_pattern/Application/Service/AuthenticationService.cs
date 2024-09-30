@@ -18,10 +18,12 @@ public class AuthenticationService: IAuthenticationService
 {
 
     private readonly IUserRepository _userRepository;
+    private readonly IConfiguration _configuration;
     
-    public AuthenticationService(IUserRepository userRepository)
+    public AuthenticationService(IUserRepository userRepository, IConfiguration configuration)
     {
         _userRepository = userRepository;
+        _configuration = configuration;
     }
     
     public async Task  Register(UserRegistrationRequestDto requestDto)
@@ -81,8 +83,8 @@ public class AuthenticationService: IAuthenticationService
         var authSignInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1eWZ#^7A$Uzp3MCzG0l9&2@Rj^qJ!nLt"));
 
         var token = new JwtSecurityToken(
-            issuer: "test-dev",
-            audience: "test-dev",
+            issuer: _configuration.GetSection("ValidUser").Value,
+            audience: _configuration.GetSection("ValidAudience").Value,
             expires: DateTime.Now.AddHours(1),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256)
