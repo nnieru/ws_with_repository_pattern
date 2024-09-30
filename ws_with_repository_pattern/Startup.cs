@@ -92,10 +92,10 @@ namespace ws_with_repository_pattern
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "test-dev",
-                    ValidAudience = "test-dev",
+                    ValidIssuer = Configuration.GetSection("ValidUser").Value ?? "",
+                    ValidAudience = Configuration.GetSection("ValidAudience").Value ?? "",
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1eWZ#^7A$Uzp3MCzG0l9&2@Rj^qJ!nLt"))
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("SecretKey").Value ?? ""))
                 };
             });
             
