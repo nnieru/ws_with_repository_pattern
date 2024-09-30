@@ -38,7 +38,7 @@ public class ExceptionMiddleware
                 message = message
             };
             
-            _logger.LogError($"{context.Request.Path} - ERROR {message}");
+            _logger.LogError($"{context.Request.Path} - IP: {context.Connection.RemoteIpAddress} - ERROR {message}");
             
             await response.WriteAsync(JsonSerializer.Serialize(mappedResponse));
         }
