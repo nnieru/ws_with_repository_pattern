@@ -61,6 +61,7 @@ public class ExceptionMiddleware
                 break;
             default:
                 code = HttpStatusCode.InternalServerError;
+                message = "System encounter some error, please try again later";
                 break;
         }
 

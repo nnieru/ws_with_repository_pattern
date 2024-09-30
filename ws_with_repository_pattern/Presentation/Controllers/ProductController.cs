@@ -44,13 +44,6 @@ public class ProductController: ControllerBase
     public  async Task<IActionResult> GetProductById(GetProductByIdRequestDto request) 
     {
         try{ 
-            var validator = ValidatorHelperFactory.New(request, new ProductIdRequestValidator());
-            var validationResult = validator.Validate();
-            if (!validationResult.IsPassed)
-            {
-                return StatusCode(400, validationResult.Errors);
-            }
-            
             var result = await _productService.GetProductById(request.id);
             return StatusCode(200, result);
         }

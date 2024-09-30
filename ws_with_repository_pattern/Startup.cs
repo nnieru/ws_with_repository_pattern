@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ws_with_repository_pattern.Application.Contract;
 using ws_with_repository_pattern.Application.Middlewares;
-// using ws_with_repository_pattern.Application.Middleware;
 using ws_with_repository_pattern.Application.Service;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.DbContext;
@@ -133,8 +132,7 @@ namespace ws_with_repository_pattern
             app.UseExceptionMiddleware();
 
             // app.UseMiddleware<RouteGuardMiddleware>();
-            // app.UseMiddleware<FluentValidationMiddleware>();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

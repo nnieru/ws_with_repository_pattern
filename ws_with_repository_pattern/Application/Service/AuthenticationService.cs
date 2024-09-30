@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,8 @@ using ws_with_repository_pattern.Application.Dto.Auth;
 using ws_with_repository_pattern.Application.Exception;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.Entity;
+using ws_with_repository_pattern.Infrastructures.Helper;
+using ws_with_repository_pattern.Response;
 
 namespace ws_with_repository_pattern.Application.Service;
 
@@ -41,7 +44,7 @@ public class AuthenticationService: IAuthenticationService
         
     }
 
-    public async Task<UserSignInResponseDto> SignIn(UserSignInRequestDto request)
+    public async Task<BaseResponse<UserSignInResponseDto>> SignIn(UserSignInRequestDto request)
     {
         var user = await _userRepository.GetUser(request.email);
         
@@ -84,8 +87,10 @@ public class AuthenticationService: IAuthenticationService
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256)
         );
-
-        return new UserSignInResponseDto
+        
+        
+        
+        var userSiginInResponse = new UserSignInResponseDto
         {
             id = user.id,
             username = user.username,
@@ -93,5 +98,8 @@ public class AuthenticationService: IAuthenticationService
             access_token = new JwtSecurityTokenHandler().WriteToken(token),
             expiration = token.ValidTo
         };
+
+        return ResponseMapper<UserSignInResponseDto, UserSignInResponseDto>.MapToBaseResponse(userSiginInResponse,
+            HttpStatusCode.OK, "success"); 
     }
 }
