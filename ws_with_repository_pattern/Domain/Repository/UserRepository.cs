@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ws_with_repository_pattern.Application.Dto.Auth;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.DbContext;
 using ws_with_repository_pattern.Domain.Entity;
@@ -14,7 +15,7 @@ public class UserRepository: IUserRepository
         _userDbContext = userDbContext;
     }
     
-    public async Task InsertUser(User user)
+    public async Task InsertUser(User user, UserRegistrationRequestDto request)
     {
         // Start a new database transaction
         using var transaction = await _userDbContext.Database.BeginTransactionAsync();
@@ -25,10 +26,21 @@ public class UserRepository: IUserRepository
             await _userDbContext.AddAsync(user);
         
             // Create a new UserRoleMapping and add it to the database
-            await _userDbContext.Set<UserRoleMapping>().AddAsync(new UserRoleMapping
+            var role = new UserRoleMapping
             {
                 userId = user.id,
-                roleId = Guid.Parse("205F4F22-8AFC-49FA-BC3F-1AE5589AEBBE")
+                roleId = Guid.Parse(request.role_id),
+            };
+            await _userDbContext.Set<UserRoleMapping>().AddAsync(role);
+            
+            // add access
+             await _userDbContext.Set<UserAccessMapping>().AddAsync(new UserAccessMapping
+            {
+                user_id = user.id,
+                role_id = Guid.Parse(request.role_id),
+                read = request.read,
+                delete = request.delete,
+                write = request.write,
             });
         
             // Save changes to the database
@@ -72,5 +84,27 @@ public class UserRepository: IUserRepository
     public async Task<List<MasterRole>> GetMasterRoles()
     {
         return await _userDbContext.Set<MasterRole>().Where(x => x.deleted_at == null).ToListAsync();
+    }
+
+    public async Task<UserAccessMapping?> GetUserAccess(string userId, Guid roleId)
+    {
+        var access = await _userDbContext.Set<UserAccessMapping>()
+            .FirstOrDefaultAsync(x => x.user_id == userId &&
+                                      x.role_id == roleId);
+        return access;
+    }
+    
+    public async Task<UserAccessMapping?> GetUserAccessMapping(string userId, Guid roleId)
+    {
+        var userAccess = await _userDbContext.Set<UserAccessMapping>().FirstOrDefaultAsync(x => x.user_id == userId &&
+            x.role_id == roleId);
+
+        return userAccess;
+    }
+
+    public async Task UpdateUserAccess(UserAccessMapping accessMapping)
+    {
+        _userDbContext.Set<UserAccessMapping>().Update(accessMapping);
+        await _userDbContext.SaveChangesAsync();
     }
 }

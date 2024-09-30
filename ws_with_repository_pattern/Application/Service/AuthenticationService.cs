@@ -37,7 +37,7 @@ public class AuthenticationService: IAuthenticationService
                 password_hash = hashedPassword,
                 username = requestDto.username,
             };
-            await _userRepository.InsertUser(user);
+            await _userRepository.InsertUser(user, requestDto);
         }
         catch ( System.Exception e)
         {
@@ -62,17 +62,20 @@ public class AuthenticationService: IAuthenticationService
         
         var roleMapping = await _userRepository.GetUserRoles(request.email);
         var masterRole = await _userRepository.GetMasterRoles();
+        var permissionMapping = await _userRepository.GetUserAccess(user.id, roleMapping.First().roleId);
 
         var userRole = (from a in roleMapping
             join b in masterRole on a.roleId equals b.id
             select b.name ).ToList();
+        
+        
 
         var authClaims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user?.username),
             new Claim(ClaimTypes.Email, user?.email),
         };
-
+     
         foreach (var role in userRole)
         {
             authClaims.Add(
@@ -80,7 +83,23 @@ public class AuthenticationService: IAuthenticationService
                 );
         }
 
-        var authSignInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1eWZ#^7A$Uzp3MCzG0l9&2@Rj^qJ!nLt"));
+        if (permissionMapping.read)
+        {
+            authClaims.Add(new Claim("Permission", "READ"));
+        }
+
+        if (permissionMapping.write)
+        {
+            authClaims.Add(new Claim("Permission", "WRITE"));
+        }
+
+        if (permissionMapping.delete)
+        {
+            authClaims.Add(new Claim("Permission", "DELETE"));
+        }
+    
+
+        var authSignInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("SecretKey").Value));
 
         var token = new JwtSecurityToken(
             issuer: _configuration.GetSection("ValidUser").Value,
@@ -103,5 +122,21 @@ public class AuthenticationService: IAuthenticationService
 
         return ResponseMapper<UserSignInResponseDto, UserSignInResponseDto>.MapToBaseResponse(userSiginInResponse,
             HttpStatusCode.OK, "success"); 
+    }
+
+    public async Task UpdateUserAccess(UpdateUserAccessRequestDto request)
+    {
+        var access = await _userRepository.GetUserAccess(request.userId, Guid.Parse(request.roleId));
+
+        if (access == null)
+        {
+            throw new KeyNotFoundException("access not found");
+        }
+
+        access.read = request.read;
+        access.write = request.write;
+        access.delete = request.delete;
+
+        await _userRepository.UpdateUserAccess(access);
     }
 }

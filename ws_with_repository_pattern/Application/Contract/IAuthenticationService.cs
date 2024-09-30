@@ -7,4 +7,6 @@ public interface IAuthenticationService
 {
     Task  Register(UserRegistrationRequestDto requestDto);
     Task<BaseResponse<UserSignInResponseDto>>SignIn(UserSignInRequestDto request);
+
+    Task UpdateUserAccess(UpdateUserAccessRequestDto request);
 }

@@ -9,6 +9,11 @@ public class UserRegistrationRequestDto
     public string email { get; set; }
     public string password { get; set; }
     public string confirmationPassword { get; set; }
+    
+    public string role_id { get; set; }
+    public bool read { get; set; }
+    public bool write { get; set; }
+    public bool delete { get; set; }
 }
 
 public class UserRegistrationRequestValidator : AbstractValidator<UserRegistrationRequestDto>
