@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ws_with_repository_pattern.Application.Contract;
 using ws_with_repository_pattern.Application.Dto.Auth;
+using ws_with_repository_pattern.Application.Exception;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.Entity;
 
@@ -33,7 +34,7 @@ public class AuthenticationService: IAuthenticationService
             };
             await _userRepository.InsertUser(user);
         }
-        catch ( Exception e)
+        catch ( System.Exception e)
         {
             throw e;
         }
@@ -46,12 +47,12 @@ public class AuthenticationService: IAuthenticationService
         
         if (user == null)
         {
-            throw new Exception("User Not Found");
+            throw new UserNotFoundException("User Not Found");
         }
 
         if (!BCrypt.Net.BCrypt.Verify(request.password, user.password_hash))
         {
-            throw new Exception("Unauthorized");
+            throw new UnauthorizedAccessException();
         }
         
         var roleMapping = await _userRepository.GetUserRoles(request.email);

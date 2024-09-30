@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ws_with_repository_pattern.Application.Contract;
+using ws_with_repository_pattern.Application.Middlewares;
+// using ws_with_repository_pattern.Application.Middleware;
 using ws_with_repository_pattern.Application.Service;
 using ws_with_repository_pattern.Domain.Contract;
 using ws_with_repository_pattern.Domain.DbContext;
@@ -92,10 +94,10 @@ namespace ws_with_repository_pattern
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "test-dev",
-                    ValidAudience = "test-dev",
+                    ValidIssuer = Configuration.GetSection("ValidUser").Value ?? "",
+                    ValidAudience = Configuration.GetSection("ValidAudience").Value ?? "",
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1eWZ#^7A$Uzp3MCzG0l9&2@Rj^qJ!nLt"))
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("SecretKey").Value ?? ""))
                 };
             });
             
@@ -128,6 +130,7 @@ namespace ws_with_repository_pattern
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseExceptionMiddleware();
 
             // app.UseMiddleware<RouteGuardMiddleware>();
             // app.UseMiddleware<FluentValidationMiddleware>();

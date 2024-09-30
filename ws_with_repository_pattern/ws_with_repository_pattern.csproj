@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Application\Middlewre\" />
       <Folder Include="Presentation\" />
     </ItemGroup>
 
