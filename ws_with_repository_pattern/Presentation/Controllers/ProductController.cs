@@ -21,18 +21,13 @@ public class ProductController: ControllerBase
     [Route("products")]
     [Authorize(Roles = "General")]
     [Produces("application/json")]
-    // [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
     public  async Task<IActionResult> GetAllProducts()
     {
-        try
-        {
-            var result = await _productService.GetAllProduct();
-            return StatusCode(200, result);
-        }
-        catch ( Exception ex )
-        {
-            return StatusCode(500, ex.Message);
-        }
+        
+        var result = await _productService.GetAllProduct();
+        return StatusCode(200, result);
+        
+      
     }
     
     [HttpPost]
@@ -40,17 +35,13 @@ public class ProductController: ControllerBase
     [Route("productById")]
     [Authorize(Roles = "General")]
     [Produces("application/json")]
-    // [ProducesResponseType(typeof(SampleOutput), StatusCodes.Status200OK)]
     public  async Task<IActionResult> GetProductById(GetProductByIdRequestDto request) 
     {
-        try{ 
-            var result = await _productService.GetProductById(request.id);
-            return StatusCode(200, result);
-        }
-        catch ( Exception ex )
-        {
-            return StatusCode(500, ex.Message);
-        }
+        
+        var result = await _productService.GetProductById(request.id);
+        return StatusCode(200, result);
+        
+        
     }
     
     
