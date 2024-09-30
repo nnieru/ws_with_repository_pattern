@@ -7,6 +7,7 @@ using ws_with_repository_pattern.Infrastructures.Helper;
 namespace ws_with_repository_pattern.Presentation.Controllers;
 
 [ApiController]
+[Authorize(Roles = "administrator, General")]
 [Route("product")]
 public class ProductController: ControllerBase
 {
@@ -19,7 +20,7 @@ public class ProductController: ControllerBase
     [HttpGet]
     [Authorize]
     [Route("products")]
-    [Authorize(Roles = "General")]
+    [Authorize("read")]
     [Produces("application/json")]
     public  async Task<IActionResult> GetAllProducts()
     {
@@ -31,18 +32,14 @@ public class ProductController: ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
     [Route("productById")]
-    [Authorize(Roles = "General")]
+    [Authorize("read")]
     [Produces("application/json")]
     public  async Task<IActionResult> GetProductById(GetProductByIdRequestDto request) 
     {
-        
         var result = await _productService.GetProductById(request.id);
         return StatusCode(200, result);
         
-        
     }
-    
     
 }

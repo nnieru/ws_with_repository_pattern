@@ -5,12 +5,14 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ws_with_repository_pattern.Application.AuthorizationRequirement;
 using ws_with_repository_pattern.Application.Contract;
 using ws_with_repository_pattern.Application.Middlewares;
 using ws_with_repository_pattern.Application.Service;
@@ -106,10 +108,21 @@ namespace ws_with_repository_pattern
             // Add authorization policies
             services.AddAuthorization(options =>
             {
+                // role
                 options.AddPolicy("AdminPolicy", policy =>
-                    policy.RequireRole("Admin"));
+                    policy.RequireRole("administrator"));
                 options.AddPolicy("UserPolicy", policy =>
                     policy.RequireRole("General"));
+                
+                // permission
+                options.AddPolicy("read", policy =>
+                    policy.Requirements.Add(new PermissionRequirement("READ")));
+
+                options.AddPolicy("write", policy =>
+                    policy.Requirements.Add(new PermissionRequirement("WRITE")));
+
+                options.AddPolicy("delete", policy =>
+                    policy.Requirements.Add(new PermissionRequirement("DELETE")));
             });
             
             
@@ -118,8 +131,9 @@ namespace ws_with_repository_pattern
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-     
-
+            
+            services.AddSingleton<IAuthorizationHandler, Permissionhandler>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -147,8 +161,6 @@ namespace ws_with_repository_pattern
             {
                 await context.Response.WriteAsync("BINUS V3.0");
             });
-
-
         }
     }
 }

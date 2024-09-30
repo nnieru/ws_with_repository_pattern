@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ws_with_repository_pattern.Application.Contract;
 using ws_with_repository_pattern.Application.Dto.Auth;
 using ws_with_repository_pattern.Infrastructures.Helper;
@@ -33,7 +34,24 @@ public class AuthController: ControllerBase
        
         var result = await _authenticationService.SignIn(requestDto);
         return Ok(result);
-        
-       
+    }
+
+    [HttpPost]
+    [Route("update-access")]
+    [Authorize(Roles = "administrator")]
+    [Authorize("write")]
+    public async Task<IActionResult> ChangeAccess([FromBody] UpdateUserAccessRequestDto requestDto)
+    {
+        await _authenticationService.UpdateUserAccess(requestDto);
+        return Ok();
+    }
+
+    [HttpGet]
+    [Route("my-roles")]
+    [Authorize(Roles = "administrator")]
+    [Authorize("read")]
+    public async Task<IActionResult> GetMyRoles()
+    {
+        throw new NotImplementedException();
     }
 }
