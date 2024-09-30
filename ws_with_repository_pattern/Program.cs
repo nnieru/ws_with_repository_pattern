@@ -7,11 +7,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using ws_with_repository_pattern;
+using ws_with_repository_pattern.Infrastructures.Grafana;
 
 public class Program
 {
     #region -= Properties =-
     public static IConfiguration Configuration { get; set; }
+    public static ILogger Logger { get; set; }
     #endregion
 
     public static void Main(string[] args)
@@ -20,18 +22,22 @@ public class Program
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddEnvironmentVariables();
-
+        
         Configuration = builder.Build();
-        //Configuration.GetSection(ExternalAPIs.SettingName).Bind(ApplicationSettings.ExternalAPIs);
-        //Configuration.GetSection(SharePointConfig.SettingName).Bind(ApplicationSettings.SharePointConfig);
-
-        CreateWebHostBuilder(args).Build().Run();
+        var host = CreateWebHostBuilder(args).Build();
+        Logger = InstrumentorPrograms.LoggerServiceProvider()
+            .GetRequiredService<ILoggerFactory>()
+            .CreateLogger<Program>();
+        
+        host.Run();
     }
 
     public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
         WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
+            
             .UseUrls(Configuration.GetSection("HostingURL").Value)
             .UseIISIntegration()
-            .UseIIS();
+            .UseIIS()
+            .AddBinusGrafana();
 }
