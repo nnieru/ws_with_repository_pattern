@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
+using ws_with_repository_pattern.Response;
 
 namespace ws_with_repository_pattern.Infrastructures.Helper
 {
@@ -17,16 +19,27 @@ namespace ws_with_repository_pattern.Infrastructures.Helper
             _mapper = config.CreateMapper();
         }
 
-        // Method to map an object of type T to V
-        public static V Map(T source)
+        public static BaseResponse<V> MapToBaseResponse(T source, HttpStatusCode statusCode, string message = "")
         {
-            return _mapper.Map<V>(source);
+            var mappedData = _mapper.Map<V>(source);
+            return new BaseResponse<V>
+            {
+                StatusCode = statusCode,
+                data = mappedData,
+                message = message
+            };
         }
 
-        // Method to map a collection of type T to a collection of V
-        public static IEnumerable<V> Map(IEnumerable<T> source)
+        // Method to map a collection of type T to BaseResponse<IEnumerable<V>>
+        public static BaseResponse<IEnumerable<V>> MapToBaseResponse(IEnumerable<T> source, HttpStatusCode statusCode, string message = "")
         {
-            return _mapper.Map<IEnumerable<V>>(source);
+            var mappedData = _mapper.Map<IEnumerable<V>>(source);
+            return new BaseResponse<IEnumerable<V>>
+            {
+                StatusCode = statusCode,
+                data = mappedData,
+                message = message
+            };
         }
     }
 }
